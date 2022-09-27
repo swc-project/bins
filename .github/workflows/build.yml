@@ -37,7 +37,7 @@ jobs:
 
       - name: List files
         run: |
-          ls -alHR ~/.cargo/bin
+          ls -al ~/.cargo/bin
 
       - uses: actions/upload-artifact@v3
         with:
