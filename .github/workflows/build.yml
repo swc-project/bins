@@ -35,14 +35,36 @@ jobs:
       - name: Build dbg-swc
         run: cargo install dbg-swc --target ${{ matrix.settings.target }}
 
-      - name: List files
+      - name: Copy files
         shell: bash
         run: |
           ls -al ~/.cargo/bin
+          cp ~/.cargo/bin/dbg-swc* dbg-swc-${{ matrix.settings.target }}
 
       - uses: actions/upload-artifact@v3
         with:
-          name: dbg-swc-${{ matrix.settings.target }}
+          name: dbg-swc
           path: |
-            ~/.cargo/bin/dbg-swc
-            ~/.cargo/bin/dbg-swc.exe
+            dbg-swc-${{ matrix.settings.target }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+     - build
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: dbg-swc
+          path: bins
+          
+      - name: Display structure of downloaded files
+        shell: bash
+        run: ls -R
+        working-directory: bins
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            bins
