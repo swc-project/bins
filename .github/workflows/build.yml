@@ -36,6 +36,7 @@ jobs:
         run: cargo install dbg-swc --target ${{ matrix.settings.target }}
 
       - name: List files
+        shell: bash
         run: |
           ls -al ~/.cargo/bin
 
