@@ -43,4 +43,6 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: dbg-swc-${{ matrix.settings.target }}
-          path: ~/.cargo/bin/dbg-swc
+          path: |
+            ~/.cargo/bin/dbg-swc
+            ~/.cargo/bin/dbg-swc.exe
