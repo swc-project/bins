@@ -13,7 +13,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.settings.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - host: ubuntu-latest
+            target: x86_64-linux-gnu
+          - host: windows-latest
+            target: x86_64-pc-windows-msvc
+          - host: macos-latest
+            target: x86_64-apple-darwin
+          - host: macos-latest
+            target: aarch64-apple-darwin
 
     steps:
       - uses: actions/checkout@v3
@@ -23,4 +35,9 @@ jobs:
 
       - name: List files
         run: |
-          ls -alHR ~/.cargo
+          ls -alHR ~/.cargo/bin
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dbg-swc-${{ matrix.settings.target }}
+          path: ~/.cargo/bin/dbg-swc
