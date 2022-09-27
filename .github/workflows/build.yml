@@ -30,6 +30,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: rustup target add ${{ matrix.settings.target }}
+
       - name: Build dbg-swc
         run: cargo install dbg-swc --target ${{ matrix.settings.target }}
 
